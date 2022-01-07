@@ -105,4 +105,4 @@ tree = Tree.new([1,2,3,4,5,6,7])
 #puts 
 #tree.delete(2)
 #tree.pretty_print
-pp tree.find(10)
+#pp tree.find(10)
