@@ -58,15 +58,39 @@ class Tree
       # if node has one or no child
       if node.left.nil?
         node = node.right
-      else node.right.nil?
+      elsif node.right.nil?
         node = node.left
+      
+      # if node has children
+      else
+        node.data = minValue(node.right) # go to node.right and get farthest left leaf and make it the new "parent"
+        node.right = delete(node.data, node.right) # delete the "copied" leaf
       end
     end
-    #node
-    
-  
+
+    # return node, if not returned then when the call stacks are pulled back (finished) delete() will return null making node.left/right = null
+    node
   end
 
+  # find the lowest left most value (iterates till the left node is null)
+  def minValue(node)
+    min_val = node.data
+    while node.left
+      min_val = node.left.data
+      node = node.left
+    end
+    min_val
+  end
+
+  def find(val, node = @root)
+    return node if node.nil? || val == node.data
+    if val < node.data
+      find(val, node.left)
+    elsif val > node.data
+      find(val, node.right)
+    end
+  end
+    
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -75,11 +99,10 @@ class Tree
 
 end
 
-
-
 tree = Tree.new([1,2,3,4,5,6,7])
 #tree.insert(10)
-tree.pretty_print
-puts 
-tree.delete(1)
-tree.pretty_print
+#tree.pretty_print
+#puts 
+#tree.delete(2)
+#tree.pretty_print
+pp tree.find(10)
